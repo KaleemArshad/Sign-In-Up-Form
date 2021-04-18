@@ -11,6 +11,7 @@
   "author": "Kaleem Arshad",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "hbs": "^4.1.2",
     "mongoose": "^5.12.4",

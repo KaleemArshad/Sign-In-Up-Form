@@ -6,6 +6,8 @@ require("./db/conn");
 const userSchema = require("./models/userSchema");
 const hbs = require("hbs");
 const path = require("path");
+const bcrypt = require("bcryptjs");
+const { error } = require('console');
 
 const port = process.env.PORT || 8000;
 const app = express();
@@ -23,30 +25,33 @@ app.get('/', (req, res) => {
     res.render('index.hbs');
 });
 
-app.post("/logedIn", async (req, res) => {
+app.post('/success', async (req, res) => {
     try {
-        const email = req.body.lemail;
-        const passcode = req.body.lpassword;
-        const userAuth = await userSchema.findOne({ email });
-        if (userAuth.password === passcode) {
-            res.render('logedIn.hbs');
-        }
+        password = await bcrypt.hash(req.body.password, 10);
+        const user = new userSchema({
+            fullName: req.body.fullname,
+            email: req.body.email,
+            password: password
+        });
+        const createUser = await user.save();
+        res.render("registered.hbs");
     } catch (error) {
         res.status(400).send(error);
     }
 
 });
 
-app.post('/success', async (req, res) => {
+app.post("/logedIn", async (req, res) => {
     try {
-        const user = new userSchema({
-            fullName: req.body.fullname,
-            email: req.body.email,
-            password: req.body.password
+        const email = req.body.lemail;
+        const passcode = req.body.lpassword;
+        const userAuth = await userSchema.findOne({
+            email
         });
-        const createUser = await user.save();
-        console.log(createUser);
-        res.render("registered.hbs");
+        const confirm = await bcrypt.compare(passcode, userAuth.password);
+        if (confirm) {
+            res.render('logedIn.hbs');
+        }
     } catch (error) {
         res.status(400).send(error);
     }
