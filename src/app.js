@@ -23,6 +23,20 @@ app.get('/', (req, res) => {
     res.render('index.hbs');
 });
 
+app.post("/logedIn", async (req, res) => {
+    try {
+        const email = req.body.lemail;
+        const passcode = req.body.lpassword;
+        const userAuth = await userSchema.findOne({ email });
+        if (userAuth.password === passcode) {
+            res.render('logedIn.hbs');
+        }
+    } catch (error) {
+        res.status(400).send(error);
+    }
+
+});
+
 app.post('/success', async (req, res) => {
     try {
         const user = new userSchema({
