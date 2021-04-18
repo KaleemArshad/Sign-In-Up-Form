@@ -1,0 +1,19 @@
+{
+  "name": "loginform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js -e js,hbs,css"
+  },
+  "keywords": [],
+  "author": "Kaleem Arshad",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "hbs": "^4.1.2",
+    "mongoose": "^5.12.4",
+    "validator": "^13.5.2"
+  }
+}
