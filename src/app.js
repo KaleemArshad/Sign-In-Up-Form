@@ -19,11 +19,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.set("view engine", hbs);
 app.set("views", path.join(__dirname, "../templates/views"));
 hbs.registerPartials(path.join(__dirname, "../templates/partials"));
-app.use(
-  express.urlencoded({
-    extended: false,
-  })
-);
+app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
   res.render("index.hbs");
@@ -34,20 +30,19 @@ app.get("/auth", auth, (req, res) => {
 });
 
 app.get("/logout", auth, async (req, res) => {
-    try {
-        req.user.tokens = req.user.tokens.filter((token) => {
-            return token.token !== req.token;
-        });  // To Logout From Current Device Only
-       
-        // req.user.tokens = [];  // To Logout From All Devices
-        
-        res.clearCookie('jwt');
-        await req.user.save();
-        res.render('index.hbs');
-    } catch (error) {
-        res.status(500).send(error);
-    }
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    }); // To Logout From Current Device Only
 
+    // req.user.tokens = [];  // To Logout From All Devices
+
+    res.clearCookie("jwt");
+    await req.user.save();
+    res.render("index.hbs");
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 app.post("/success", async (req, res) => {
