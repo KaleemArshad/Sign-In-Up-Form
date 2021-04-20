@@ -13,7 +13,7 @@ const auth = require("./middlewares/auth");
 const port = process.env.PORT || 8000;
 const app = express();
 
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
 app.set("view engine", hbs);
